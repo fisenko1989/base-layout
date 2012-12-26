@@ -1,11 +1,6 @@
-// CSS Reset
-@import "reset.less";
-// mixins
-@import "mixins.less";
+/*// CSS Reset/*/
+@import "normalize.css";
+/*//Your CSS here.*/
 
-//Your CSS here.
-
-//END
-
-// Utility classes
-@import "utilities.less"; // Has to be last to override when necessary
+/*//END*/
+@import "utilities.css";
