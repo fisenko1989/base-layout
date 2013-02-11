@@ -1,6 +1,6 @@
 /*// CSS Reset/*/
-@import "normalize.css";
+@import "css/normalize.css";
 /*//Your CSS here.*/
 
 /*//END*/
-@import "utilities.css";
+@import "css/utilities.css";
