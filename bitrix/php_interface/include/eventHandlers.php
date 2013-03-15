@@ -22,7 +22,7 @@ AddEventHandler("main", "OnEpilog",
                 array("customEventsHandler", "OnEpilogHandler"));
 */
 
-class customEventsHandler(){
+class customEventsHandler {
     function OnBeforeIBlockPropertyAddHandler(&$arFields){
         
     }
