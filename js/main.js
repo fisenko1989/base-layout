@@ -1,3 +1,7 @@
 $(function(){
-    
+    init();
 })
+
+function init(){
+    
+}
