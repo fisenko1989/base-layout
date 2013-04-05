@@ -33,3 +33,6 @@ function autoCompileLess($inputFile, $outputFile) {
 }
 
 autoCompileLess(LESS_PATH, LESS_COMPILED_PATH);
+
+// Класс для работы с изображениями
+require_once('classes/class.upload.php');
