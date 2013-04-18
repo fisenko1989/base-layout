@@ -1647,6 +1647,14 @@ class lessc {
 		$locale = setlocale(LC_NUMERIC, 0);
 		setlocale(LC_NUMERIC, "C");
 
+        $internal_encoding = NULL;
+        // only if mbstring installed
+        if (function_exists('mb_orig_strlen')) {
+            $internal_encoding = ini_get('mbstring.internal_encoding');
+            if(!is_null($internal_encoding)){
+                ini_set('mbstring.internal_encoding', NULL);
+            }
+        }
 		$this->parser = $this->makeParser($name);
 		$root = $this->parser->parse($string);
 
@@ -1666,6 +1674,9 @@ class lessc {
 		$this->formatter->block($this->scope);
 		$out = ob_get_clean();
 		setlocale(LC_NUMERIC, $locale);
+        if(!is_null($internal_encoding)){
+            ini_set('mbstring.internal_encoding', $internal_encoding);
+        }
 		return $out;
 	}
 
@@ -2065,7 +2076,7 @@ class lessc_parser {
 	static protected $supressDivisionProps =
 		array('/border-radius$/i', '/^font$/i');
 
-	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document");
+	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document", "viewport", "-moz-viewport", "-o-viewport", "-ms-viewport");
 	protected $lineDirectives = array("charset");
 
 	/**
@@ -2106,6 +2117,7 @@ class lessc_parser {
 	}
 
 	public function parse($buffer) {
+
 		$this->count = 0;
 		$this->line = 1;
 
@@ -2125,6 +2137,7 @@ class lessc_parser {
 		// parse the entire file
 		$lastCount = $this->count;
 		while (false !== $this->parseChunk());
+
 
 		if ($this->count != strlen($this->buffer))
 			$this->throwError();
@@ -2653,7 +2666,6 @@ class lessc_parser {
 			}
 
 			if (!empty($rejectStrs) && in_array($tok, $rejectStrs)) {
-				$ount = null;
 				break;
 			}
 
@@ -3062,7 +3074,7 @@ class lessc_parser {
 	protected function end() {
 		if ($this->literal(';')) {
 			return true;
-		} elseif ($this->count == strlen($this->buffer) || $this->buffer{$this->count} == '}') {
+		} elseif ($this->count == strlen($this->buffer) || $this->buffer[$this->count] == '}') {
 			// if there is end of file or a closing block next then we don't need a ;
 			return true;
 		}
